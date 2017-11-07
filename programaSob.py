@@ -29,7 +29,7 @@ if __name__ == '__main__':
     for sheet in wb.worksheets:
         # Busca o menu "Obras" e acessa o submenu "Acompanhamento de Obra"
         menu = driver.find_element_by_class_name('ctl00_Menu_GomNet_3')
-        hidden_submenu = driver.find_element_by_xpath('//*[@id="ctl00_Menu_GomNetn6"]/td/table/tbody/tr/td/a')
+        hidden_submenu = driver.find_element_by_xpath('//*[@id="ctl00_Menu_GomNetn12"]/td/table/tbody/tr/td/a')
         webdriver.ActionChains(driver).move_to_element(menu).click(hidden_submenu).perform()
 
         # Insere o valor na textbox "Número SOB" e realiza a consulta
@@ -43,19 +43,7 @@ if __name__ == '__main__':
         driver.find_element_by_id('ctl00_ContentPlaceHolder1_ImageButton_Enviar').click()
 
         # Clica no botão "Programação da Obra"
-        try:
-            compel = driver.find_element_by_xpath("//*[contains(text(), 'COMPEL CONSTRUÇÕES MONTAGENS E')]")
-            webdriver.ActionChains(driver).click(compel).perform()
-
-            print("Linha encontrada")
-            m = 0
-            while m <= 8:
-                webdriver.ActionChains(driver).send_keys(Keys.TAB).perform()
-                m += 1
-            webdriver.ActionChains(driver).send_keys(Keys.SPACE).perform()
-        except NoSuchElementException:
-            print("Obra não despachada para a COMPEL. Impossível continuar.")
-            break
+        driver.find_element_by_id('ctl00_ContentPlaceHolder1_Gridview_Programacao_Obra_ctl02_imgBtnObra').click()
 
         # Modifica o atributo CSS da textbox para torná-la editável e insere o valor da variável codTurma
         turma = driver.find_element_by_css_selector('#ctl00_ContentPlaceHolder1_txtBoxTurma')
