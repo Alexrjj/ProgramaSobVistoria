@@ -9,9 +9,12 @@ try:
 except ImportError:  # python3.x
     izip = zip
 
+#  Acessa os dados de login fora do script, salvo numa planilha existente, para proteger as informações de credenciais
+dados = openpyxl.load_workbook('C:\\gomnet.xlsx')
+login = dados['Plan1']
 url = 'http://gomnet.ampla.com/'
-username = ''
-password = ''
+username = login['A1'].value
+password = login['A2'].value
 wb = openpyxl.load_workbook('sobs.xlsx')
 wb1 = openpyxl.load_workbook('sobs.xlsx')
 
