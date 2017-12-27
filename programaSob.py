@@ -51,15 +51,15 @@ if __name__ == '__main__':
         # Modifica o atributo CSS da textbox para torná-la editável e insere o valor da variável codTurma
         turma = driver.find_element_by_css_selector('#ctl00_ContentPlaceHolder1_txtBoxTurma')
         driver.execute_script("arguments[0].setAttribute('onkeydown','return true;')", turma)
-        turma.send_keys(str(sheet['E1'].value))
+        turma.send_keys(str(sheet['F1'].value))
 
         servico = driver.find_element_by_css_selector('#ctl00_ContentPlaceHolder1_txtBoxRespServico')
         driver.execute_script("arguments[0].setAttribute('onkeydown','return true;')", servico)
-        servico.send_keys(str(sheet['F1'].value))
+        servico.send_keys(str(sheet['G1'].value))
 
         servicoSup = driver.find_element_by_css_selector('#ctl00_ContentPlaceHolder1_txtBoxServicoSuplente')
         driver.execute_script("arguments[0].setAttribute('onkeydown','return true;')", servicoSup)
-        servicoSup.send_keys(str(sheet['F1'].value))
+        servicoSup.send_keys(str(sheet['G1'].value))
 
         # Procura a textbox "Data Inicio Previsto" e atribui à variável dataInicial
         dataInicial = driver.find_element_by_id('ctl00_ContentPlaceHolder1_Control_DataHora_InicioPrevisto_TextBox6')
@@ -72,6 +72,8 @@ if __name__ == '__main__':
         # Busca o valor da variável dataIni, e insere na textbox "Data Inicio Previsto" todos os caracteres,
         for character in str(sheet['B1'].value):
             dataInicial.send_keys(character)
+        for character in str(sheet['C1'].value):
+            dataInicial.send_keys(character)
 
         # Procura a textbox "Data Término Previsto" e atribui à variável dataFinal
         dataFinal = driver.find_element_by_id('ctl00_ContentPlaceHolder1_Control_DataHora_TerminoPrevisto_TextBox6')
@@ -83,7 +85,9 @@ if __name__ == '__main__':
             c += 1
 
         # Busca o valor da variável dataFinal, e insere na textbox "Data Término Previsto" todos os caracteres,
-        for character in str(sheet['B2'].value):
+        for character in str(sheet['B1'].value):
+            dataFinal.send_keys(character)
+        for character in str(sheet['C2'].value):
             dataFinal.send_keys(character)
 
         # Adiciona técnicos à tarefa
@@ -127,7 +131,7 @@ if __name__ == '__main__':
         driver.find_element_by_id('ctl00_ContentPlaceHolder1_btnAdicionarProgramacao').click()
         row = 0
         col = 0
-        for (baremo, qtd) in zip(sheet.iter_cols(min_col=3, max_col=3), sheet.iter_cols(min_col=4, max_col=4)):
+        for (baremo, qtd) in zip(sheet.iter_cols(min_col=4, max_col=4), sheet.iter_cols(min_col=5, max_col=5)):
             for (cell, cell2) in zip(baremo, qtd):
                 try: # Procura os baremos na planilha "sobs.xlsx" e marca de acordo
                     driver.find_element_by_xpath("*//tr/td[contains(text(), '" + str(cell.value) + "')]/preceding-sibling::td/input").click()
@@ -135,7 +139,7 @@ if __name__ == '__main__':
                     webdriver.ActionChains(driver).send_keys(str(cell2.value)).perform()
                 except NoSuchElementException:  # Caso não encontre, abre o arquivo txt e registra o código baremo e sua quantidade
                     log = open("BaremosPendentes.txt", "a")
-                    log.write(str(sheet['A1'].value) + " " + str(cell.value) + " " + str(cell2.value) + "\n")
+                    log.write(str(sheet['H1'].value) + " " + str(cell.value) + " " + str(cell2.value) + "\n")
                     log.close()
                 continue
         #  Ao fim do loop de inserção de baremos, clica no botão "registrar programação"
